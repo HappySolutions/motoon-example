@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:motoon_api_example/ui/screens/usersScreen/users_screen.dart';
+import 'package:motoon_api_example/ui/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const UsersScreen(),
+      home: const LoginScreen(),
     );
   }
 }

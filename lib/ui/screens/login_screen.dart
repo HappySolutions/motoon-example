@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Username', prefixIcon: Icon(Icons.email)),
                     validator: (val) =>
                         val!.length < 1 ? 'Username Required' : null,
-                    onSaved: (val) => loginRequest.userName = val!,
+                    onSaved: (val) => loginRequest.email = val!,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     // controller: _controllerUsername,

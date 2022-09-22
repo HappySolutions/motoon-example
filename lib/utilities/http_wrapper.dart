@@ -18,12 +18,6 @@ class HttpWrapper {
 
   Future<String> post(String url,
       {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    // var uri = Uri.parse(url);
-    // Map<String, String> headers = {
-    //   'Content-Type': 'application/json',
-    //   'authorization': 'Basic c3R1ZHlkb3RlOnN0dWR5ZG90ZTEyMw=='
-    // };
-
     HttpClient httpClient = HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
 

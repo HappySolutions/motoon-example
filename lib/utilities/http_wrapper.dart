@@ -26,7 +26,12 @@ class HttpWrapper {
 
     HttpClient httpClient = HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+
     request.headers.set('Content-type', 'application/json');
+    request.headers.set('Accept', 'application/json');
+    request.headers
+        .set('authorization', 'Basic c3R1ZHlkb3RlOnN0dWR5ZG90ZTEyMw==');
+
     request.add(utf8.encode(json.encode(body)));
     HttpClientResponse response = await request.close();
     String reply = await response.transform(utf8.decoder).join();

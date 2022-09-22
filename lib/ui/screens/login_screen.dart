@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 import 'package:motoon_api_example/models/login_req.dart';
+import 'package:motoon_api_example/ui/screens/register_screen.dart';
+import 'package:motoon_api_example/ui/screens/usersScreen/users_screen.dart';
 
 import '../../repos/login_service.dart';
 
@@ -18,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool hidePass = true;
   late LoginRequest loginRequest;
+  late String tokenItem = '';
+  TextEditingController _mailcontroller = TextEditingController();
+  TextEditingController _passwrodcontroller = TextEditingController();
+
   bool validateAndSave() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -37,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -69,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             width: size.width,
-            height: 300,
+            height: 350,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Color.fromARGB(255, 253, 253, 253),
@@ -86,16 +91,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextFormField(
+                    controller: _mailcontroller,
                     decoration: InputDecoration(
                         labelText: 'Username', prefixIcon: Icon(Icons.email)),
                     validator: (val) =>
-                        val!.length < 1 ? 'Username Required' : null,
+                        !val!.contains('@') ? "Email Id should be valid" : null,
                     onSaved: (val) => loginRequest.email = val!,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     // controller: _controllerUsername,
                   ),
                   TextFormField(
+                    controller: _passwrodcontroller,
+
                     decoration: InputDecoration(
                         labelText: 'Password',
                         prefixIcon: Icon(Icons.lock),
@@ -133,11 +141,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           LoginSevice loginService = LoginSevice();
                           loginService.login(loginRequest).then((value) {
                             if (value != null) {
-                              print('it good');
+                              print('it good not null');
                               if (value.token.isNotEmpty) {
+                                tokenItem = value.token;
                                 print(value.token);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => UsersScreen(
+                                          token: tokenItem,
+                                        )));
+                                _mailcontroller.clear();
+                                _passwrodcontroller.clear();
                               } else {
                                 print(value.error);
+
+                                var snackBar =
+                                    SnackBar(content: Text(value.error));
+                                // Step 3
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               }
                             }
                           });
@@ -147,7 +168,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Need an Account?',
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RegisterScreen()));
+                      _mailcontroller.clear();
+                      _passwrodcontroller.clear();
+                    },
                   ),
                 ],
               ),
@@ -235,32 +261,3 @@ class RPSCustomPainter2 extends CustomPainter {
     return true;
   }
 }
-
-// class RPSCustomPainter3 extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Paint paint0 = Paint()
-//       ..color = const Color.fromARGB(255, 239, 245, 251)
-//       ..style = PaintingStyle.fill
-//       ..strokeWidth = 1;
-
-//     Path path0 = Path();
-//     path0.moveTo(0, size.height * 0.2142857);
-//     path0.lineTo(size.width * 0.6250000, size.height * 0.2142857);
-//     path0.quadraticBezierTo(size.width * 0.7504167, size.height * 0.2521429,
-//         size.width * 0.7500000, size.height * 0.4271429);
-//     path0.quadraticBezierTo(size.width * 0.7504167, size.height * 0.6078571,
-//         size.width * 0.6250000, size.height * 0.6428571);
-//     path0.lineTo(0, size.height * 0.6428571);
-//     path0.lineTo(0, size.height * 0.2142857);
-//     path0.close();
-
-//     canvas.drawPath(path0, paint0);
-//   }
-
-//   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//     return true;
-//   }
-// }
-

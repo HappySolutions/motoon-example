@@ -5,7 +5,11 @@ import 'package:motoon_api_example/repos/users.dart';
 import 'package:motoon_api_example/ui/components/info_card.dart';
 
 class UsersScreen extends StatefulWidget {
-  const UsersScreen({Key? key}) : super(key: key);
+  String token;
+  UsersScreen({
+    Key? key,
+    required this.token,
+  }) : super(key: key);
 
   @override
   State<UsersScreen> createState() => _UsersScreenState();
@@ -13,10 +17,10 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   late Future<List<User>> _usersListFuture;
-
   @override
   void initState() {
     super.initState();
+
     _usersListFuture = Users().getUsers();
   }
 
@@ -24,9 +28,22 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Users list"),
+        // title: Text("User token is ${widget.token}"),
+        title: const Text('Users List'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.visibility),
+            tooltip: 'Show user token',
+            onPressed: () {
+              var snackBar =
+                  SnackBar(content: Text('User token is ${widget.token}'));
+              // Step 3
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+          ),
+        ],
       ),
-      body: _getUsersGrid(),
+      body: Container(child: _getUsersGrid()),
     );
   }
 

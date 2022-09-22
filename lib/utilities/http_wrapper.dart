@@ -33,7 +33,7 @@ class HttpWrapper {
     httpClient.close();
     // var response =
     //     await http.post(uri, headers: headers, body: body, encoding: encoding);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 400) {
       return reply;
     } else {
       throw HttpError(

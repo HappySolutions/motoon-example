@@ -1,6 +1,5 @@
 import 'package:motoon_api_example/models/login_req.dart';
 import 'package:motoon_api_example/models/login_respon.dart';
-import 'package:motoon_api_example/models/user.dart';
 import 'package:motoon_api_example/utilities/constants.dart';
 import 'package:motoon_api_example/utilities/http_wrapper.dart';
 import 'dart:convert';

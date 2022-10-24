@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool hidePass = true;
   late LoginRequest loginRequest;
-  late String tokenItem = '';
+  late String? tokenItem = '';
   TextEditingController _mailcontroller = TextEditingController();
   TextEditingController _passwrodcontroller = TextEditingController();
 
@@ -142,9 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           loginService.login(loginRequest).then((value) {
                             if (value != null) {
                               print('it good not null');
-                              if (value.token.isNotEmpty) {
-                                tokenItem = value.token;
-                                print(value.token);
+                              if (value.code == 0) {
+                                tokenItem = value.data?.token;
+                                print(value.data?.token);
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => UsersScreen(
                                           token: tokenItem,
@@ -152,10 +152,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _mailcontroller.clear();
                                 _passwrodcontroller.clear();
                               } else {
-                                print(value.error);
-
-                                var snackBar =
-                                    SnackBar(content: Text(value.error));
+                                print(value.message);
+                                String? msg = value.message;
+                                var snackBar = SnackBar(content: Text(msg!));
                                 // Step 3
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);

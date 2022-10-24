@@ -5,7 +5,7 @@ import 'package:motoon_api_example/repos/users.dart';
 import 'package:motoon_api_example/ui/components/info_card.dart';
 
 class UsersScreen extends StatefulWidget {
-  String token;
+  String? token;
   UsersScreen({
     Key? key,
     required this.token,
@@ -52,16 +52,17 @@ class _UsersScreenState extends State<UsersScreen> {
         future: _usersListFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print(snapshot.data);
+            User users = snapshot.data![0];
             return GridView.count(
               crossAxisCount: 2,
               children: List.generate(
                 snapshot.data!.length,
                 (index) => InfoCardComponent(
                   cardInfo: CardInfo(
-                    title:
-                        "${snapshot.data![index].firstName} ${snapshot.data![index].lastName}",
-                    subtitle: snapshot.data![index].email,
-                    image: snapshot.data![index].image,
+                    title: "${users.data![index].name}",
+                    subtitle: 'snapshot.data![index].email',
+                    image: 'https://www.w3schools.com/howto/img_avatar.png',
                   ),
                 ),
               ),
